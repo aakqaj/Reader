@@ -1,0 +1,67 @@
+[
+  {
+    "SourceName": "书源名",
+    "BaseUrl": "https://www.156n.com",
+    "Search": {
+      "SearchUrl": "https://www.156n.com/search.php",
+      "Method": "POST",
+      "payload": {},
+
+      "ResultBookListRule": "",
+      "DetailUrlRule": "",
+      "BookNameRule": "",
+      "AuthorRule": "",
+      "TypeRule": "",
+      "WordsCountRule": "",
+      "NewChapterRule": "",
+      "InfoRule": "",
+      "ImgURLRule": ""
+    },
+    "BookDetail": {
+      "BookNameRule": "",
+      "AuthorRule": "",
+      "TypeRule": "",
+      "WordsCountRule": "",
+      "NewChapterRule": "",
+      "InfoRule": "",
+      "ImgURLRule": "",
+      "CatalogueNameRule": "",
+      "CatalogueUrlRule": "",
+      "ContentRule": ""
+    }
+  },
+  {
+    "SourceName": "笔趣阁",
+    "BaseUrl": "https://www.xiashucom.com",
+    "Search": {
+      "SearchUrl": "https://www.xiashucom.com/search/result.html",
+      "Method": "GET",
+      "payload": {
+        "searchkey": "",
+        "demo":"demo"
+      },
+
+      "ResultBookListRule": "",
+      "DetailUrlRule": "",
+      "BookNameRule": "",
+      "AuthorRule": "",
+      "TypeRule": "",
+      "WordsCountRule": "",
+      "NewChapterRule": "",
+      "InfoRule": "",
+      "ImgURLRule": ""
+    },
+    "BookDetail": {
+      "BookNameRule": "",
+      "AuthorRule": "",
+      "TypeRule": "",
+      "WordsCountRule": "",
+      "NewChapterRule": "",
+      "InfoRule": "",
+      "ImgURLRule": "",
+      "CatalogueNameRule": "",
+      "CatalogueUrlRule": "",
+      "ContentRule": ""
+    }
+  }
+]

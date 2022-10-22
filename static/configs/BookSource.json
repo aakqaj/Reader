@@ -1,0 +1,137 @@
+[
+  {
+    "SourceName": "156",
+    "BaseUrl": "https://www.156n.com",
+    "Search": {
+      "SearchUrl": "https://www.156n.com/search.php",
+      "Method": "POST",
+      "Payload": ["keyword=$", "json=1"],
+      "ResultBookListRule": "",
+      "DetailUrlRule": "",
+      "BookNameRule": "",
+      "AuthorRule": "",
+      "TypeRule": "",
+      "WordsCountRule": "",
+      "NewChapterRule": "",
+      "IntroRule": "",
+      "ImgURLRule": ""
+    },
+    "BookDetail": {
+      "BookNameRule": "",
+      "AuthorRule": "",
+      "TypeRule": "",
+      "WordsCountRule": "",
+      "NewChapterRule": "",
+      "IntroRule": "",
+      "ImgURLRule": "",
+      "CatalogueNameRule": "",
+      "CatalogueUrlRule": "",
+      "ContentRule": ""
+    }
+  },
+  {
+    "SourceName": "笔趣阁",
+    "BaseUrl": "https://www.biquge0.cc",
+    "Search": {
+      "SearchUrl": "https://www.biquge0.cc/modules/article/search.php",
+      "Method": "POST",
+      "Payload": ["searchkey=$"],
+      "ResultBookListRule": ".txt-list li@html",
+      "DetailUrlRule": ".s2 a.0@href",
+      "BookNameRule": ".s2 a.0@text",
+      "AuthorRule": ".s4@text",
+      "TypeRule": ".s1@text",
+      "WordsCountRule": "",
+      "NewChapterRule": ".s3@text",
+      "NewChapterDateRule": ".s5@text",
+      "IntroRule": "",
+      "ImgURLRule": ""
+    },
+    "BookDetail": {
+      "BookNameRule": "",
+      "AuthorRule": "",
+      "TypeRule": "",
+      "WordsCountRule": "",
+      "NewChapterRule": "",
+      "IntroRule": "",
+      "ImgURLRule": "",
+      "CatalogueNameRule": "",
+      "CatalogueUrlRule": "",
+      "ContentRule": ""
+    }
+  },
+  {
+    "SourceName": "88读书网",
+    "BaseUrl": "https://m.baka5.cc",
+    "Search": {
+      "SearchUrl": "https://m.baka5.cc/search/",
+      "Method": "POST",
+      "Payload": ["searchkey=$", "searchtype=all"],
+      "ResultBookListRule": ".book_list li@html",
+      "DetailUrlRule": "a@href",
+      "BookNameRule": ".book_title@text",
+      "AuthorRule": "p.1@text",
+      "TypeRule": ".status@text",
+      "WordsCountRule": "",
+      "NewChapterRule": "",
+      "IntroRule": ".intro@text",
+      "ImgURLRule": ".book_cover@src"
+    },
+    "BookDetail": {
+      "BookNameRule": ".title@text",
+      "AuthorRule": ".mt5 a@text",
+      "TypeRule": ".bookcover p.1@text",
+      "WordsCountRule": "",
+      "NewChapterRule": ".num@text",
+      "NewChapterDateRule": ".bookcover p.3@text",
+      "IntroRule": ".con@text",
+      "ImgURLRule": ".pic img@src",
+      "Content": {
+        "DetailUrlRule": ".loading a@href",
+        "CatalogueListRule": ".cataloglist li@html",
+        "CatalogueNameRule": "span@text",
+        "CatalogueUrlRule": "a@href",
+        "NextCatalogePageRule": ".index-container-btn.1@href",
+        "ContentRule": "",
+        "NextContentPageRule": ""
+      }
+    }
+  },
+  {
+    "SourceName": "新笔趣儿",
+    "BaseUrl": "https://www.xbiquer.com",
+    "Search": {
+      "SearchUrl": "https://www.xbiquer.com/plus/search.php",
+      "Method": "GET",
+      "Payload": { "q": "$" },
+      "ResultBookListRule": ".grid #nr@html",
+      "DetailUrlRule": "a.0@href",
+      "BookNameRule": "a.0@text",
+      "AuthorRule": "a.1@text",
+      "TypeRule": "",
+      "WordsCountRule": "",
+      "NewChapterRule": "",
+      "IntroRule": "",
+      "ImgURLRule": ""
+    },
+    "BookDetail": {
+      "BookNameRule": "#info h1@text",
+      "AuthorRule": "#info a.0@text",
+      "TypeRule": "",
+      "WordsCountRule": "",
+      "NewChapterRule": "",
+      "NewChapterDateRule": "",
+      "IntroRule": "#intro@text",
+      "ImgURLRule": "#fmimg img@src",
+      "Content": {
+        "DetailUrlRule": "",
+        "CatalogueListRule": "#list dd@html",
+        "CatalogueNameRule": "a@text",
+        "CatalogueUrlRule": "a@href",
+        "NextCatalogePageRule": "",
+        "ContentRule": "#content@html",
+        "NextContentPageRule": "#nextChapterButton.1@href"
+      }
+    }
+  }
+]

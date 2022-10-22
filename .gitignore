@@ -1,0 +1,8 @@
+node_modules
+out
+build
+.idea
+yarn.lock
+package-lock.json
+static/bookshelf/
+static/imgs/
