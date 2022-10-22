@@ -2,7 +2,10 @@ node_modules
 out
 build
 .idea
+.git
 yarn.lock
+.DS_Store
+.gitignore
 package-lock.json
 static/bookshelf/
 static/imgs/
