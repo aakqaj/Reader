@@ -7,7 +7,7 @@ yarn.lock
 .gitignore
 package-lock.json
 
-static/bookshelf/
+static/bookshelf/*
 static/imgs/
 
 .DS_Store
