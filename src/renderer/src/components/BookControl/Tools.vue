@@ -80,7 +80,7 @@ function toNextChapter() {
 }
 
 .tools-list {
-  padding: 20px 10px;
+  // padding: 20px 10px;
   height: calc(100vh - 70px);
   //   margin: 0 auto;
   border-bottom: 1px solid hsl(0, 0%, 25%);

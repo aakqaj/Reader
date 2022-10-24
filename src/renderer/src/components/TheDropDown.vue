@@ -3,6 +3,7 @@
     <nav class="drop-down-menu" :class="id">
       <input type="checkbox" class="activate" :id="id" />
       <label :for="id" class="menu-title">
+        <the-icon :icon="'arrow_right_fat'"></the-icon>
         <slot name="dropDownTitle"></slot>
       </label>
 
@@ -14,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+import TheIcon from "./TheIcon.vue";
 import { defineProps, onMounted, onUpdated, ref } from "vue";
 
 const props = defineProps(["id"]);
@@ -28,54 +30,52 @@ onMounted(() => {
 });
 
 function getDropDownHeigth() {
-  return `${itemCount.value * 30}px`;
+  let el = document.querySelector(`.${props.id} .item`);
+  if (el) {
+    return `${el.clientHeight * itemCount.value}px`;
+  }
+
+  return "0px";
 }
 </script>
 
 <style lang="css" scoped>
-a,
 label {
-  text-decoration: none;
-  color: #fff;
-  font-weight: bold;
+  color: var(--text-color);
 }
 
-a:hover {
-  color: #ddd;
-}
-
-.menu a {
-  display: block;
-  padding: 10px 15px;
+.menu {
+  user-select: none;
 }
 
 .drop-down-menu {
   display: block;
 }
-
-.menu-title {
-  cursor: pointer;
-}
-
 .menu-title {
   display: block;
   padding: 10px 15px;
+
+  display: flex;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.menu-title svg {
+  margin-right: 30px;
+  transition: all 0.2s ease-in;
 }
 
 .activate {
   display: none;
-
-  position: absolute;
-  cursor: pointer;
-  width: 100%;
-  height: 40px;
-  margin: 0 0 0 -15px;
-  opacity: 0;
 }
 
 /* Skin */
 .drop-down-menu {
-  background: #3d6d99;
+  /* background: var(--bg); */
+  border-radius: 4px;
+  border-bottom: 1px solid var(--border-color2);
+  /* background: #3d6d99;
   background: -webkit-gradient(
     linear,
     left top,
@@ -83,7 +83,7 @@ a:hover {
     color-stop(0%, #5796d0),
     color-stop(100%, #3d6d99)
   );
-  background: -moz-linear-gradient(top, #5796d0 0%, #3d6d99 100%);
+  background: -moz-linear-gradient(top, #5796d0 0%, #3d6d99 100%); */
 }
 
 .drop-down-menu:hover {
@@ -110,24 +110,20 @@ a:hover {
   background: -moz-linear-gradient(top, #495261 0%, #38404b 100%);
 }
 
+:checked ~ .menu-title svg {
+  transform: rotate(90deg);
+}
+
 .drop-down {
-  max-height: 0;
+  height: 0;
   overflow: hidden;
 }
 
-.drop-down a {
-  background: #222;
-}
-
-.drop-down a:hover {
-  background: #111;
-}
-
 .activate:checked ~ .drop-down {
-  max-height: v-bind(getDropDownHeigth());
+  height: v-bind(getDropDownHeigth());
 }
 
 .drop-down {
-  transition: max-height 0.3s ease-in-out;
+  transition: height 0.3s ease-in-out;
 }
 </style>
