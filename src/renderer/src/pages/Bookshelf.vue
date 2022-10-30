@@ -3,7 +3,10 @@
     <div class="bookshelf">
       <div class="book" v-for="(book, index) in bookList" :key="index">
         <div @click="read(book.BookName)">
-          <img :src="book.BookImg" alt="img not found" />
+          <img
+            :src="book.BookImg"
+            onerror="this.src= 'https://img1.baidu.com/it/u=2723741487,3517617872&fm=253&fmt=auto&app=138&f=JPG?w=500&h=710';"
+          />
           <div class="book-name">{{ book.BookName }}</div>
         </div>
       </div>

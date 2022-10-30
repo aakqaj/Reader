@@ -146,6 +146,11 @@ export class DetailsRequest {
     let nextPageRule = this.sourceBookDetails.Content.NextCatalogePageRule;
     let chapterList: Chapter[] = [];
 
+    let leftUrl =
+      this.sourceBookDetails.Content.DetailUrlRule === "base"
+        ? this.bookDetail.BaseUrl
+        : this.bookDetail.DetailUrl;
+
     this.bsa
       .ruleSearch(this.sourceBookDetails.Content.CatalogueListRule)
       .map((item: string) => {
@@ -153,7 +158,7 @@ export class DetailsRequest {
         let url =
           b.ruleSearch(this.sourceBookDetails.Content.CatalogueUrlRule)[0] ||
           "";
-        url = joinUrl(this.bookDetail.DetailUrl, url);
+        url = joinUrl(leftUrl, url);
 
         chapterList.push({
           ChapterName:
@@ -171,7 +176,7 @@ export class DetailsRequest {
       let url = this.bsa.ruleSearch(
         this.sourceBookDetails.Content.NextCatalogePageRule
       )[0];
-      url = joinUrl(this.bookDetail?.BaseUrl, url);
+      url = joinUrl(leftUrl, url);
       if (isUrl(url)) {
         await this.getRequestHtml(url);
         await this.setChapterList();

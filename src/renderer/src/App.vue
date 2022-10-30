@@ -19,7 +19,7 @@ onMounted(async () => {
     "./static/configs/BookSource.json"
   );
   await stroe.dispatch("setBookSourceList", bookSourceAllData);
-  await stroe.dispatch("setBookSource", "新笔趣儿");
+  await stroe.dispatch("setBookSource", "88读书网");
 });
 </script>
 

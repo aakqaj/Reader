@@ -72,30 +72,12 @@ label {
 
 /* Skin */
 .drop-down-menu {
-  /* background: var(--bg); */
   border-radius: 4px;
   border-bottom: 1px solid var(--border-color2);
-  /* background: #3d6d99;
-  background: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0%, #5796d0),
-    color-stop(100%, #3d6d99)
-  );
-  background: -moz-linear-gradient(top, #5796d0 0%, #3d6d99 100%); */
 }
 
 .drop-down-menu:hover {
-  background: #5a6470;
-  background: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0%, #495261),
-    color-stop(100%, #38404b)
-  );
-  background: -moz-linear-gradient(top, #495261 0%, #38404b 100%);
+  background-color: hsl(10deg, 0%, 18%);
 }
 
 :checked ~ .menu-title {

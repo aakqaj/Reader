@@ -7,11 +7,15 @@
       <div class="search-result">
         <div v-for="(b, index) in bookList" :key="index" class="card">
           <div class="book" @click="showDetails(b)">
-            <img :src="b.ImgURL || img" alt="" />
+            <!-- <img :src="b.ImgURL || img" alt="" /> -->
+            <img
+              :src="b.ImgURL || img"
+              onerror="this.src= 'https://img1.baidu.com/it/u=2723741487,3517617872&fm=253&fmt=auto&app=138&f=JPG?w=500&h=710';"
+            />
             <div>
               <div>{{ b.BookName }}</div>
-              <div>{{ b.Type + '|' + b.Author }}</div>
-              <div>{{ b.NewChapterDate + ' ' + b.WordsCount }}</div>
+              <div>{{ b.Type + "|" + b.Author }}</div>
+              <div>{{ b.NewChapterDate + " " + b.WordsCount }}</div>
               <div class="intro">{{ b.Intro }}</div>
             </div>
           </div>
@@ -28,29 +32,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRaw, Transition } from 'vue'
-import TheIcon from '../components/TheIcon.vue'
-import BookDetails from './BookDetails.vue'
+import { ref, toRaw, Transition } from "vue";
+import TheIcon from "../components/TheIcon.vue";
+import BookDetails from "./BookDetails.vue";
 
-import { computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
-const store = useStore()
-const router = useRouter()
-const bookList = computed(() => store.state.BookList.bookList)
+const store = useStore();
+const router = useRouter();
+const bookList = computed(() => store.state.BookList.bookList);
 
 const img =
-  'https://img1.baidu.com/it/u=2723741487,3517617872&fm=253&fmt=auto&app=138&f=JPG?w=500&h=710'
+  "https://img1.baidu.com/it/u=2723741487,3517617872&fm=253&fmt=auto&app=138&f=JPG?w=500&h=710";
 
-const componentName = ref<any>(undefined)
+const componentName = ref<any>(undefined);
 
 async function showDetails(book: any) {
-  book = toRaw(book)
-  await store.dispatch('requestBookDetail', book)
+  book = toRaw(book);
+  await store.dispatch("requestBookDetail", book);
 
   if (componentName.value == undefined) {
-    componentName.value = BookDetails
+    componentName.value = BookDetails;
   }
 
   // console.log(book);
@@ -58,14 +62,14 @@ async function showDetails(book: any) {
 
 function back() {
   if (componentName.value !== undefined) {
-    componentName.value = undefined
+    componentName.value = undefined;
   } else {
-    router.push("bookshelf")
+    router.push("bookshelf");
   }
 }
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 .back {
   position: fixed;
   top: 12px;

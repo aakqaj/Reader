@@ -7,8 +7,9 @@
       :animeObj="animetion"
     >
       <div class="tools-list">
-        <replace :id="'demo'"></replace>
-        <replace :id="'demo2'"></replace>
+        <replace :id="'replace'" />
+        <font-style :id="'fontStyle'" />
+        <thems :id="'them'" />
       </div>
 
       <div class="next-chapter" @click="toNextChapter">下一章</div>
@@ -20,8 +21,10 @@
 import { computed, toRaw } from "vue";
 import { getCursor } from "../../assets/utils/requestBookCursor";
 import MyTransition from "../MyTransition.vue";
-import TheIcon from "../TheIcon.vue";
+// import TheIcon from "../TheIcon.vue";
 import Replace from "./Replace.vue";
+import FontStyle from "./FontStyle.vue";
+import Thems from "./Thems.vue";
 
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";

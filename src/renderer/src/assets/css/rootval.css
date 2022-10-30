@@ -21,6 +21,21 @@
   src: url("./font/ZCOOLKuaiLe-Regular.ttf");
 }
 
+@font-face {
+  font-family: "Xingkai";
+  src: url("./font/QingNiaoHuaGuangXingKai-2.ttf");
+}
+
+@font-face {
+  font-family: "Kangxi";
+  src: url("./font/TypeLand-com-KangXiZiDianTi-ShiYongBan-1.otf");
+}
+
+@font-face {
+  font-family: "Hongyun";
+  src: url("./font/No.186-ShangShouHongYunTi-2.ttf");
+}
+
 :root {
   --bg: hsl(0, 0%, 100%);
   --text-color: hsl(218, 25%, 28%);

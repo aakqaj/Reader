@@ -24,7 +24,7 @@
       </div>
       <div class="chapter-name">{{ chapterName() }}</div>
       <div class="shedule-this">
-        {{ `${readingPage} / ${readingPageCount}` }}
+        {{ `${readingPage + 1} / ${readingPageCount + 1}` }}
       </div>
     </div>
   </div>
@@ -34,6 +34,7 @@
 import anime from "animejs";
 import { computed, onMounted, ref, defineProps, watch, toRaw } from "vue";
 import { getCursor } from "../assets/utils/requestBookCursor";
+import { replceContentByRegSource } from "../assets/utils/readReplaceReg";
 import { useStore } from "vuex";
 
 import { keyListener } from "../assets/utils/utils";
@@ -44,11 +45,6 @@ const bookDetail = toRaw(
   computed(() => store.state.BookDetails.bookDetail).value
 );
 const showTools = computed(() => store.state.BookState.showTools);
-
-function chapterName() {
-  return bookDetail.ChapterList[getCursor(bookDetail.BookName)].ChapterName;
-}
-
 const readingPageCount = ref(0);
 const readingPage = ref(0);
 
@@ -90,9 +86,10 @@ watch(
   (old) => {
     let readingEl = document.querySelector(".reading");
     if (readingEl) {
-      console.log(bookDetail);
-
-      readingEl.innerHTML = old[1];
+      readingEl.innerHTML = replceContentByRegSource(
+        bookDetail.BookName,
+        old[1]
+      );
       const readingEle: any = document.querySelector(".reading");
       const scrollWidth = readingEle.scrollWidth;
       const pageWidth = readingEle.offsetWidth + 20;
@@ -103,6 +100,10 @@ watch(
     }
   }
 );
+
+function chapterName() {
+  return bookDetail.ChapterList[getCursor(bookDetail.BookName)].ChapterName;
+}
 
 function changeShowTools() {
   store.commit("setStateShowTools", !showTools.value);
@@ -201,14 +202,15 @@ function turnLeft() {
 #content-box {
   width: 100%;
   height: 100%;
-
   position: relative;
+  // background: #e0ce9e
+  //   url("https://qdfepccdn.qidian.com/www.qidian.com/images/read/theme/body_theme1_bg_2x.acde8.png")
+  //   repeat fixed;
 }
 
 .show {
-  margin: 10px 60px;
-  height: 90vh;
-  font-family: Zcoo;
+  margin: 0 20px;
+  font-family: Xingkai;
   font-size: 28px;
 
   overflow: scroll;
@@ -225,13 +227,6 @@ function turnLeft() {
   z-index: 10;
 }
 
-@media only screen and (min-width: 1514px) {
-  .show {
-    margin: 10px 360px;
-    height: 90vh;
-  }
-}
-
 .title {
   margin: 0 auto;
 
@@ -242,12 +237,26 @@ function turnLeft() {
   h4 {
     margin: 0;
     padding: 0;
+
+    font-family: Hongyun;
   }
+}
+
+.title {
+  height: 5vh;
+}
+
+.show {
+  height: 90vh;
+}
+
+.footer {
+  height: 5vh;
+  margin: 0;
 }
 
 .footer {
   position: absolute;
-  margin: 10px auto;
   width: 100%;
   bottom: 0;
 
@@ -258,5 +267,12 @@ function turnLeft() {
 
   align-items: center;
   justify-items: center;
+}
+
+@media only screen and (min-width: 1514px) {
+  .show {
+    margin: 0 360px;
+    height: 90vh;
+  }
 }
 </style>

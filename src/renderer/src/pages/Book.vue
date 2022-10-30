@@ -86,6 +86,10 @@ body {
   z-index: 10;
 
   background-color: var(--bg);
+  // background: #e0ce9e
+  //   url("https://qdfepccdn.qidian.com/www.qidian.com/images/read/theme/body_theme1_bg_2x.acde8.png")
+  //   repeat fixed;
+
   overflow: scroll;
 }
 </style>
