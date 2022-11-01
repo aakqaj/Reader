@@ -97,7 +97,12 @@ button::after {
 }
 
 .size {
+  & > div {
+    margin-left: 2%;
+  }
+
   input[type="range"] {
+    margin-left: 10%;
     width: 80%;
   }
 }
@@ -115,14 +120,13 @@ button::after {
     color: white;
     text-align: left;
 
-    transition: padding transform 0.1s ease-in-out;
+    transition: padding 0.1s ease-in-out;
   }
   & > button:focus {
     border-left: 4px solid #1d89ff;
     padding-left: 24px;
 
     background-color: hsl(0, 0%, 26%);
-    transform: scale(1, 1);
   }
 }
 </style>

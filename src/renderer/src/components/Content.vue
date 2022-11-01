@@ -109,8 +109,6 @@ function changeShowTools() {
   store.commit("setStateShowTools", !showTools.value);
 }
 function turnRight() {
-  console.log("<reading page> ", readingPage.value);
-
   const readingEle: any = document.querySelector(".reading");
   const scrollWidth = readingEle.scrollWidth;
   let pageWidth = readingEle.offsetWidth + 20;
@@ -150,7 +148,6 @@ function turnRight() {
 }
 
 function turnLeft() {
-  console.log("<reading page> ", readingPage.value);
   const readingEle: any = document.querySelector(".reading");
   const scrollWidth = readingEle.scrollWidth;
   let pageWidth = readingEle.offsetWidth + 20;
@@ -165,7 +162,6 @@ function turnLeft() {
     });
 
     readingPage.value -= 1;
-    console.log("左");
   } else if (readingPage.value === 0) {
     if (getCursor(bookDetail.BookName) === 0) {
       return;
@@ -181,7 +177,6 @@ function turnLeft() {
     // 等待watch重新计算载入的html
     setTimeout(() => {
       readingPage.value = readingPageCount.value;
-      console.log(readingPage.value, readingPageCount.value);
 
       anime({
         targets: ".reading",
@@ -209,7 +204,6 @@ function turnLeft() {
 }
 
 .show {
-  margin: 0 20px;
   font-family: Xingkai;
   font-size: 28px;
 
@@ -222,7 +216,6 @@ function turnLeft() {
 
 .reading {
   height: 100%;
-  columns: calc(100vw - 680px);
   column-gap: 20px;
   z-index: 10;
 }
@@ -269,10 +262,23 @@ function turnLeft() {
   justify-items: center;
 }
 
+.show {
+  margin-left: 88px;
+  margin-right: 88px;
+}
+
+.reading {
+  columns: calc(100vw - 40px);
+}
+
 @media only screen and (min-width: 1514px) {
   .show {
-    margin: 0 360px;
-    height: 90vh;
+    margin-left: 28px;
+    margin-right: 28px;
+  }
+  .reading {
+    margin: 0px 20px;
+    columns: calc(100vw - 980px);
   }
 }
 </style>

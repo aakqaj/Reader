@@ -1,0 +1,34 @@
+{
+    "Font": {
+        "FontFamily": [
+            {
+                "name": "",
+                "url": ""
+            }
+        ],
+        "TitleSize": 34,
+        "ContentSize": 28
+    },
+    "Thems": [
+        {
+            "name": "淡雅白",
+            "BackgroundColor": "rgb(255, 255, 255)",
+            "FontColor": "#000003"
+        },
+        {
+            "name": "牛皮黄",
+            "BackgroundColor": "#e0ce9e",
+            "FontColor": "#000003"
+        },
+        {
+            "name": "青草绿",
+            "BackgroundColor": "rgb(227, 237, 205)",
+            "FontColor": "#000003"
+        },
+        {
+            "name": "石墨黑",
+            "BackgroundColor": "rgb(255, 255, 255)",
+            "FontColor": "#000003"
+        }
+    ]
+}

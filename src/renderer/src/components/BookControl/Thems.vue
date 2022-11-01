@@ -4,7 +4,7 @@
       <template #dropDownTitle>皮肤样式</template>
       <template #dropDownContent>
         <div class="item">
-          <div class="them black-white"></div>
+          <div class="them-test black-white" @click="demo"></div>
           <span>淡雅白</span>
           <div class="them black-yellow"></div>
           <span>牛皮黄</span>
@@ -19,8 +19,13 @@
 </template>
 
 <script setup lang="ts">
+import { getThems } from "../../assets/utils/LocationlApi/readStyle";
 import { defineProps, computed, ref } from "vue";
 import TheDropDown from "../TheDropDown.vue";
+
+function demo() {
+  getThems();
+}
 
 defineProps(["id"]);
 </script>
@@ -67,18 +72,24 @@ defineProps(["id"]);
   }
 
   .black-white {
-    &::before {
-      border-color: black transparent transparent black;
-    }
+    grid-row: 1 / 2;
 
-    &::after {
-      border-color: transparent white white transparent;
-    }
+    position: relative;
+    width: 48px;
+    height: 48px;
+    background-image: linear-gradient(to bottom right, #000003, #fff);
+    // &::before {
+    //   border-color: #000003 transparent transparent #000003;
+    // }
+
+    // &::after {
+    //   border-color: transparent white white transparent;
+    // }
   }
 
   .black-yellow {
     &::before {
-      border-color: black transparent transparent black;
+      border-color: #000003 transparent transparent #000003;
     }
 
     &::after {
@@ -88,18 +99,18 @@ defineProps(["id"]);
 
   .black-green {
     &::before {
-      border-color: black transparent transparent black;
+      border-color: #000003 transparent transparent #000003;
     }
 
     &::after {
-      border-color: transparent hsl(120, 80%, 45%) hsl(120, 80%, 45%)
+      border-color: transparent rgb(227, 237, 205) rgb(227, 237, 205)
         transparent;
     }
   }
 
   .white-black {
     &::before {
-      border-color: white transparent transparent white;
+      border-color: #ffffff transparent transparent white;
     }
 
     &::after {
