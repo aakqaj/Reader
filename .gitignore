@@ -7,6 +7,9 @@ yarn.lock
 .gitignore
 package-lock.json
 
+devtools
+dist
+
 static/bookshelf/**/*.html
 static/imgs/
 

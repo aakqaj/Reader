@@ -42,17 +42,48 @@ export function joinUrl(leftUrl: string | undefined, rightUrl: string): string {
 
   repeat.map((item) => {
     let key = `\/${item}`
-    console.log(key)
+    // console.log(key);
     rightUrl = rightUrl.replace(new RegExp(key, 'gm'), '')
   })
 
   return leftUrl + rightUrl
 }
 
+interface KeyFun {
+  keyName: string
+  fun: Function
+}
+const keyFun: KeyFun[] = []
+
 export function keyListener(key: string, callback: Function) {
+  if (!keyFun.some((item) => item.keyName === key)) {
+    keyFun.push({
+      keyName: key,
+      fun: callback
+    })
+  }
+
   document.onkeyup = (e) => {
-    if (e.key === key) {
-      callback()
+    e.preventDefault()
+    keyFun.filter((item) => {
+      if (e.key === item.keyName) {
+        item.fun()
+      }
+    })
+  }
+}
+
+export function debounce(func: Function, delay: number) {
+  let timeout: any = null
+  return function (...args: any) {
+    if (timeout) {
+      clearTimeout(timeout)
+      timeout = null
     }
+
+    timeout = setTimeout(() => {
+      // @ts-ignore
+      func.apply(this, args)
+    }, delay)
   }
 }

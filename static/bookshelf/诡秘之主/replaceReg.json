@@ -1,0 +1,1 @@
+[{"source":"<font.*?<\\/font>","replace":""},{"source":"(<br><br>\\n<br><br>　　)|(<br><br>　　)","replace":"<br><br>"}]

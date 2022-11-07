@@ -7,7 +7,11 @@
       <div class="search-result">
         <div v-for="(b, index) in bookList" :key="index" class="card">
           <div class="book" @click="showDetails(b)">
-            <img :src="b.ImgURL || img" alt="" />
+            <!-- <img :src="b.ImgURL || img" alt="" /> -->
+            <img
+              :src="b.ImgURL || img"
+              onerror="this.src= 'https://img1.baidu.com/it/u=2723741487,3517617872&fm=253&fmt=auto&app=138&f=JPG?w=500&h=710';"
+            />
             <div>
               <div>{{ b.BookName }}</div>
               <div>{{ b.Type + '|' + b.Author }}</div>
@@ -60,12 +64,12 @@ function back() {
   if (componentName.value !== undefined) {
     componentName.value = undefined
   } else {
-    router.push("bookshelf")
+    router.push('bookshelf')
   }
 }
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 .back {
   position: fixed;
   top: 12px;

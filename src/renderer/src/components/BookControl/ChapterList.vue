@@ -157,6 +157,7 @@ function search() {
   }
 }
 .chapter {
+  border-radius: 8px 0 0 8px;
   background-image: linear-gradient(
     to right,
     hsla(0, 0%, 14%, 0.99),

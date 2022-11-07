@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body">
+  <Teleport to="#book-body">
     <div id="my-book">
       <chapter-list></chapter-list>
       <Content :content="content"></Content>
@@ -76,8 +76,10 @@ body {
 }
 
 #my-book {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+
+  border-radius: 8px;
 
   min-width: 520px;
   position: absolute;
@@ -86,6 +88,10 @@ body {
   z-index: 10;
 
   background-color: var(--bg);
-  overflow: scroll;
+  // background: #e0ce9e
+  //   url("https://qdfepccdn.qidian.com/www.qidian.com/images/read/theme/body_theme1_bg_2x.acde8.png")
+  //   repeat fixed;
+
+  overflow: hidden;
 }
 </style>

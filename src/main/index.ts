@@ -1,6 +1,9 @@
-import { app, shell, BrowserWindow } from 'electron'
+import { app, shell, BrowserWindow, session } from 'electron'
 import * as path from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
+import { resolve } from 'path'
+
+const ipcMain = require('electron').ipcMain
 
 function createWindow(): void {
   // Create the browser window.
@@ -8,7 +11,9 @@ function createWindow(): void {
     width: 2506 / 2,
     height: 1902 / 2,
     show: false,
-    // frame:false,
+    frame: false,
+    resizable: true,
+    transparent: false,
     autoHideMenuBar: true,
     ...(process.platform === 'linux'
       ? {
@@ -42,6 +47,22 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'))
   }
+
+  ipcMain.on('window-min', function () {
+    mainWindow.minimize()
+  })
+  //接收最大化命令
+  ipcMain.on('window-max', function () {
+    if (mainWindow.isMaximized()) {  
+      mainWindow.restore()
+    } else {
+      mainWindow.maximize()
+    }
+  })
+  //接收关闭命令
+  ipcMain.on('window-close', function () {
+    mainWindow.close()
+  })
 }
 
 // This method will be called when Electron has finished
@@ -50,6 +71,8 @@ function createWindow(): void {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
+
+  session.defaultSession.loadExtension(resolve(__dirname, '../../devtools/'))
 
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
@@ -80,3 +103,4 @@ app.on('window-all-closed', () => {
 
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.
+// console.log('messages', resolve(__dirname, '../../devtools/'))

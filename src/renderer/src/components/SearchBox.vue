@@ -28,10 +28,10 @@ async function search() {
 
 <style lang="scss" scoped>
 .search {
+  
   &__container {
     margin: 0 auto;
-
-    padding-top: 12px;
+    padding-top: 28px;
     width: 420px;
   }
 

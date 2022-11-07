@@ -76,6 +76,8 @@ onMounted(() => {
   let data: {}[] = [...toRaw(store.state.BookDetails.bookDetail.ChapterList)];
   cList.value = data.splice(data.length - 10, data.length).reverse();
 
+  console.log(data);
+
   let m = function (e: any) {
     e.preventDefault();
   };

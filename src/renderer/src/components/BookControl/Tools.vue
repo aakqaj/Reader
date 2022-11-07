@@ -6,7 +6,11 @@
       :name="'tools'"
       :animeObj="animetion"
     >
-      <div class="tools-list"></div>
+      <div class="tools-list">
+        <replace :id="'replace'" />
+        <font-style :id="'fontStyle'" />
+        <thems :id="'them'" />
+      </div>
 
       <div class="next-chapter" @click="toNextChapter">下一章</div>
     </my-transition>
@@ -17,7 +21,10 @@
 import { computed, toRaw } from "vue";
 import { getCursor } from "../../assets/utils/requestBookCursor";
 import MyTransition from "../MyTransition.vue";
-import TheIcon from "../TheIcon.vue";
+// import TheIcon from "../TheIcon.vue";
+import Replace from "./Replace.vue";
+import FontStyle from "./FontStyle.vue";
+import Thems from "./Thems.vue";
 
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -66,6 +73,7 @@ function toNextChapter() {
   }
 }
 .tools {
+  border-radius: 0 8px 8px 0;
   height: 100vh;
   background-image: linear-gradient(
     to left,
@@ -76,6 +84,7 @@ function toNextChapter() {
 }
 
 .tools-list {
+  // padding: 20px 10px;
   height: calc(100vh - 70px);
   //   margin: 0 auto;
   border-bottom: 1px solid hsl(0, 0%, 25%);
