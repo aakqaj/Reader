@@ -4,17 +4,17 @@
       <template #dropDownTitle>字体类型</template>
       <template #dropDownContent>
         <div class="item">
-          <div class="ftype">
+          <div class="ftype" @click="reloadFontSize">
             <button
               class="ftype-title"
-              :class="{ active: isActive }"
+              :class="{ ftypeActive: isActive }"
               @click="isActive = true"
             >
               标题
             </button>
             <button
               class="ftype-content"
-              :class="{ active: !isActive }"
+              :class="{ ftypeActive: !isActive }"
               @click="isActive = false"
             >
               正文
@@ -27,29 +27,13 @@
           </div>
 
           <div class="font-style">
-            <button style="font-family: ZhiMangXing; font-size: 36px">
-              志莽行书体
-            </button>
-
             <button
-              class="active"
-              style="font-family: MaShanZhen; font-size: 36px"
+              v-for="font in fontFamilyList"
+              :key="font.name"
+              :style="`font-family: ${font.name}; font-size: 36px`"
+              @click="reloadFontFamily(font.name)"
             >
-              马善政毛笔楷书
-            </button>
-
-            <button style="font-family: Zcoo; font-size: 36px">站酷常规</button>
-
-            <button style="font-family: Xingkai; font-size: 36px">
-              青鸟华光行楷
-            </button>
-
-            <button style="font-family: Kangxi; font-size: 36px">
-              康熙字典體
-            </button>
-
-            <button style="font-family: Hongyun; font-size: 36px">
-              鸿运体
+              {{ font.text }}
             </button>
           </div>
         </div>
@@ -59,16 +43,121 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed, ref } from "vue";
+import { defineProps, ref, watch, onMounted } from "vue";
 import TheDropDown from "../TheDropDown.vue";
-import { useStore } from "vuex";
+// import { useStore } from "vuex";
+import { mittBus } from "../../assets/lib/mittBus";
+import { getFontSize, getStyle } from "../../assets/utils/api/readStyle";
+import { BookStyle } from "../../assets/interface/Style";
+import _ from "lodash";
 
 defineProps(["id"]);
-const store = useStore();
-const bookName = computed(() => store.state.BookDetails.bookDetail.BookName);
+// const store = useStore();
+// const bookName = computed(() => store.state.BookDetails.bookDetail.BookName);
 
 const isActive = ref(true);
 const fontSize = ref(0);
+
+const fontFamilyList = [
+  {
+    name: "ZhiMangXing",
+    text: "志莽行书体",
+  },
+  {
+    name: "MaShanZhen",
+    text: "马善政毛笔楷书",
+  },
+  {
+    name: "Zcoo",
+    text: "站酷常规",
+  },
+  {
+    name: "Xingkai",
+    text: "青鸟华光行楷",
+  },
+  {
+    name: "Kangxi",
+    text: "康熙字典體",
+  },
+  {
+    name: "Hongyun",
+    text: "鸿运体",
+  },
+  {
+    name: "YaHei",
+    text: "微软雅黑",
+  },
+  {
+    name: "SanjiXingKai",
+    text: "三极行楷简体",
+  },
+  {
+    name: "Maoken",
+    text: "猫啃",
+  },
+  {
+    name: "GuYin",
+    text: "苏新诗古印宋简",
+  },
+];
+
+onMounted(async () => {
+  await reloadFontSize();
+});
+
+watch(
+  () => fontSize.value,
+  async () => {
+    let targetEl = document.querySelector(".ftypeActive");
+    let targetText: string = "";
+    let style: BookStyle = await getStyle();
+
+    if (targetEl) {
+      targetText = targetEl.textContent || "标题";
+    }
+
+    if (targetText.indexOf("标题") === 1) {
+      style.Font.TitleSize = fontSize.value;
+    } else {
+      style.Font.ContentSize = fontSize.value;
+    }
+
+    mittBus.emit("reloadStyle", style);
+  }
+);
+
+async function reloadFontSize() {
+  let targetEl = document.querySelector(".ftypeActive");
+  let targetText: string | null = "";
+
+  if (targetEl) {
+    targetText = targetEl.textContent || "标题";
+  }
+
+  if (targetText.indexOf("标题") === 1) {
+    fontSize.value = (await getFontSize()).titleSize;
+  } else {
+    fontSize.value = (await getFontSize()).contentSize;
+  }
+}
+
+async function reloadFontFamily(font: string) {
+  let targetEl = document.querySelector(".ftypeActive");
+  let targetText: string = "";
+  let style: BookStyle = await getStyle();
+
+  if (targetEl) {
+    targetText = targetEl.textContent || "标题";
+  }
+
+  if (targetText.indexOf("标题") === 1) {
+    style.Font.TitleFontFamily = font;
+  } else {
+    style.Font.ContentFontFamily = font;
+  }
+
+  mittBus.emit("reloadStyle", style);
+}
 </script>
 
 <style scoped lang="scss">
@@ -89,7 +178,7 @@ button::after {
     border: none;
   }
 
-  .active {
+  .ftypeActive {
     background: #1d89ff;
   }
 

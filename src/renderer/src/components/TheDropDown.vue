@@ -72,24 +72,20 @@ label {
 
 /* Skin */
 .drop-down-menu {
-  border-radius: 4px;
+  margin: 0 auto;
+  width: 98%;
+  border-radius: 8px;
   border-bottom: 1px solid var(--border-color2);
 }
 
 .drop-down-menu:hover {
-  background-color: hsl(10deg, 0%, 18%);
+  border-radius: 8px;
+  background: hsl(10deg, 0%, 18%);
 }
 
 :checked ~ .menu-title {
-  background: #495261;
-  background: -webkit-gradient(
-    linear,
-    left top,
-    left bottom,
-    color-stop(0%, #495261),
-    color-stop(100%, #38404b)
-  );
-  background: -moz-linear-gradient(top, #495261 0%, #38404b 100%);
+  border-radius: 8px;
+  background: hsl(10deg, 0%, 24%);
 }
 
 :checked ~ .menu-title svg {

@@ -14,7 +14,7 @@
             />
             <div>
               <div>{{ b.BookName }}</div>
-              <div>{{ b.Type + "|" + b.Author }}</div>
+              <div>{{ b.Type + " " + b.Author }}</div>
               <div>{{ b.NewChapterDate + " " + b.WordsCount }}</div>
               <div class="intro">{{ b.Intro }}</div>
             </div>
@@ -42,7 +42,7 @@ import { useStore } from "vuex";
 
 const store = useStore();
 const router = useRouter();
-const bookList = computed(() => store.state.BookList.bookList);
+const bookList = computed(() => store.state.SearchBookList.searchResult);
 
 const img =
   "https://img1.baidu.com/it/u=2723741487,3517617872&fm=253&fmt=auto&app=138&f=JPG?w=500&h=710";

@@ -1,6 +1,6 @@
 import { BookDetail } from "../../assets/interface/BookDeatils";
 import { DetailsRequest } from "../../assets/utils/DetailsRequest";
-import { readJsonFile } from "../../assets/utils/operationFile";
+import { readJsonFile, writeJsonFile } from "../../assets/utils/operationFile";
 
 export const BookDetails = {
   state() {
@@ -17,7 +17,6 @@ export const BookDetails = {
   actions: {
     async requestBookDetail({ commit }, bookDetail: BookDetail) {
       const detailReq = new DetailsRequest(bookDetail);
-
       commit("setBookDetail", await detailReq.getAllDataOfDetails());
     },
 
@@ -26,6 +25,13 @@ export const BookDetails = {
         `./static/bookshelf/${bookName}/detail.json`
       );
       commit("setBookDetail", bookDetail);
+    },
+
+    async writeBookDetail({ commit }, bookDetail: BookDetail) {
+      writeJsonFile(
+        `./static/bookshelf/${bookDetail.BookName}/detail.json`,
+        bookDetail
+      );
     },
   },
 };

@@ -1,1 +1,0 @@
-[{"source":"武动乾坤","replace":""},{"source":"(<br><br>\\n<br><br>　　)|(<br><br>　　)","replace":"<br><br>"},{"source":"16k小说wap.16k整理","replace":""},{"source":"第.*?章.*?\\n","replace":""},{"source":"<font.*?</font>","replace":""}]

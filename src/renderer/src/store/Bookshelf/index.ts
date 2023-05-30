@@ -1,15 +1,15 @@
-import { toRaw } from "vue";
-import { getBookshelfInfo } from "../../assets/utils/requestBookShelf";
+import { toRaw } from 'vue'
+import { getBookshelfInfo } from '../../assets/utils/requestBookShelf'
 
 export const Bookshelf = {
   state() {
     return {
-      bookList: {},
-    };
+      bookList: {}
+    }
   },
   mutations: {
-    reloadBookshelf(state) {
-      state.bookList = getBookshelfInfo();
-    },
-  },
-};
+    reloadBookshelf(state: any) {
+      state.bookList = getBookshelfInfo()
+    }
+  }
+}

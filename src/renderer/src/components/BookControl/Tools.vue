@@ -10,6 +10,7 @@
         <replace :id="'replace'" />
         <font-style :id="'fontStyle'" />
         <thems :id="'them'" />
+        <reload-book-detail></reload-book-detail>
       </div>
 
       <div class="next-chapter" @click="toNextChapter">下一章</div>
@@ -25,12 +26,11 @@ import MyTransition from "../MyTransition.vue";
 import Replace from "./Replace.vue";
 import FontStyle from "./FontStyle.vue";
 import Thems from "./Thems.vue";
+import ReloadBookDetail from "./ReloadBookDetail.vue";
 
-import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 const store = useStore();
-const router = useRouter();
 const showTools = computed(() => store.state.BookState.showTools);
 
 const animetion = {
@@ -73,6 +73,7 @@ function toNextChapter() {
   }
 }
 .tools {
+  border-radius: 0 8px 8px 0;
   height: 100vh;
   background-image: linear-gradient(
     to left,

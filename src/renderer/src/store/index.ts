@@ -1,25 +1,24 @@
-import { createStore } from 'vuex'
-import { BookDetails } from './BookDetails'
-import { BookList } from './SearchBookList'
-import { BookSource } from './BookSource'
-import {Bookshelf} from "./Bookshelf"
-import {BookState} from "./BookState"
-
+import { createStore } from "vuex";
+import { BookDetails } from "./BookDetails";
+import { SearchBookList } from "./SearchBookList";
+import { BookSource } from "./BookSource";
+import { Bookshelf } from "./Bookshelf";
+import { BookState } from "./BookState";
 
 const store = createStore({
   modules: {
     BookDetails,
-    BookList,
+    SearchBookList,
     BookSource,
     Bookshelf,
-    BookState
+    BookState,
   },
   state() {
-    return {}
+    return {};
   },
 
   mutations: {},
-  actions: {}
-})
+  actions: {},
+});
 
-export { store }
+export { store };

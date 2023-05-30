@@ -36,6 +36,25 @@
   src: url("./font/No.186-ShangShouHongYunTi-2.ttf");
 }
 
+@font-face {
+  font-family: "YaHei";
+  src: url("./font/msyh.otf");
+}
+
+@font-face {
+  font-family: "SanjiXingKai";
+  src: url("./font/三极行楷简体-粗.ttf");
+}
+
+@font-face {
+  font-family: "Maoken";
+  src: url("./font/猫啃.ttf");
+}
+
+@font-face {
+  font-family: "GuYin";
+  src: url("./font/SuXinShiGuYinSongJian-1.ttf");
+}
 :root {
   --bg: hsl(0, 0%, 100%);
   --text-color: hsl(218, 25%, 28%);
@@ -47,7 +66,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --text-color: hsl(0, 0%, 93%);
-    --bg: hsl(0, 0%, 21%);
+    --bg: rgb(61, 62, 65);
 
     --border-color1: hsl(0, 0%, 12%);
     --border-color2: hsl(0, 0%, 25%);

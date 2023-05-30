@@ -7,10 +7,7 @@
           <!-- <AddReplaceRule /> -->
           <Transition name="fadeOut">
             <template v-if="isApper">
-              <ShowReplaceRule
-                :replaceData="replaceList"
-                @reload="readReplaceData"
-              />
+              <ShowReplaceRule :replaceData="replaceList" @reload="readReplaceData" />
             </template>
           </Transition>
 
@@ -28,12 +25,7 @@
             >
               返回
             </div>
-            <div
-              class="bttn-pill bttn-sm bttn-primary add-btn"
-              @click="addReplaceRule"
-            >
-              添加
-            </div>
+            <div class="bttn-pill bttn-sm bttn-primary add-btn" @click="addReplaceRule">添加</div>
           </div>
         </div>
       </template>
@@ -42,67 +34,64 @@
 </template>
 
 <script lang="ts" setup>
-import { defineProps, computed, toRaw, ref, Transition, onMounted } from "vue";
-import TheDropDown from "../TheDropDown.vue";
-import AddReplaceRule from "./AddReplaceRule.vue";
-import ShowReplaceRule from "./ShowReplaceRule.vue";
-import { useStore } from "vuex";
+import { defineProps, computed, toRaw, ref, Transition, onMounted } from 'vue'
+import TheDropDown from '../TheDropDown.vue'
+import AddReplaceRule from './AddReplaceRule.vue'
+import ShowReplaceRule from './ShowReplaceRule.vue'
+import { useStore } from 'vuex'
 
-import {
-  pushReplaceRule,
-  readReplaceRule,
-} from "../../assets/utils/readReplaceReg";
+import { pushReplaceRule, readReplaceRule } from '../../assets/utils/readReplaceReg'
 
-const store = useStore();
+const store = useStore()
 
-const bookName = computed(() => store.state.BookDetails.bookDetail.BookName);
+const bookName = computed(() => store.state.BookDetails.bookDetail.BookName)
 
-defineProps(["id"]);
+defineProps(['id'])
 
-const isApper = ref(true);
-let replaceList = ref();
+const isApper = ref(true)
+let replaceList = ref()
 
 function readReplaceData() {
   setTimeout(
-    () => (replaceList.value = toRaw(readReplaceRule(toRaw(bookName.value)))),
+    async () => (replaceList.value = toRaw(await readReplaceRule(toRaw(bookName.value)))),
     0
-  );
+  )
 }
 
 function changeApper() {
-  isApper.value = true;
-  readReplaceData();
+  isApper.value = true
+  readReplaceData()
 }
 
 function addReplaceRule() {
   if (isApper.value === true) {
-    isApper.value = false;
+    isApper.value = false
   } else {
-    let bName = toRaw(bookName.value);
-    const sEl: any = document.querySelector("#source-text");
-    const rEl: any = document.querySelector("#replace-text");
+    let bName = toRaw(bookName.value)
+    const sEl: any = document.querySelector('#source-text')
+    const rEl: any = document.querySelector('#replace-text')
 
     if (sEl && rEl) {
-      let sourcetext = sEl.value;
-      let replaceText = rEl.value;
+      let sourcetext = sEl.value
+      let replaceText = rEl.value
       // pushReplaceRule(bName, sourcetext, replaceText);
-      console.log(bName, sourcetext, replaceText);
-      if (sourcetext !== "") {
-        pushReplaceRule(bName, sourcetext, replaceText);
+      console.log(bName, sourcetext, replaceText)
+      if (sourcetext !== '') {
+        pushReplaceRule(bName, sourcetext, replaceText)
       }
     }
   }
 }
 
 onMounted(() => {
-  readReplaceData();
-});
+  readReplaceData()
+})
 </script>
 
 <style scoped lang="scss">
-@import url("../../assets/css/bbtn.min.css");
+@import url('../../assets/css/bbtn.min.css');
 .replace {
-  margin-top: 20px;
+  margin-top: 36px;
 }
 .item {
   height: 240px;

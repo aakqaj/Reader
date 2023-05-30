@@ -15,39 +15,37 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { useStore } from "vuex";
-const store = useStore();
-const router = useRouter();
-const route = useRoute();
+import { onMounted, computed, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+const store = useStore()
+const router = useRouter()
+const route = useRoute()
 
-let bookList = computed(() => store.getters.getBookshelf);
+let bookList = computed(() => store.getters.getBookshelf)
 
 async function read(bookname: string) {
-  await store.dispatch("readBookDetails", bookname);
-  router.push("/book");
+  await store.dispatch('readBookDetails', bookname)
+  router.push('/book')
 }
 
 watch(
   () => route,
   () => {
     // 回调函数
-    console.log("reload");
-    store.commit("reloadBookshelf");
-
-    bookList = computed(() => store.state.Bookshelf.bookList);
+    store.commit('reloadBookshelf')
+    bookList = computed(() => store.state.Bookshelf.bookList)
   },
   {
     immediate: true,
-    deep: true,
+    deep: true
   }
-);
+)
 
 onMounted(() => {
-  store.commit("reloadBookshelf");
-  bookList = computed(() => store.state.Bookshelf.bookList);
-});
+  store.commit('reloadBookshelf')
+  bookList = computed(() => store.state.Bookshelf.bookList)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -94,10 +92,12 @@ onMounted(() => {
 
   &:hover {
     box-shadow: 1px 1px 20px hsla(0, 0%, 28%, 1);
+    transform: scale(1.025);
   }
   text-align: center;
   .book-name {
     height: 20px;
+    font-size: 16px;
   }
 }
 </style>

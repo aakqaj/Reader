@@ -68,19 +68,20 @@ export function existsSync(path: string) {
 }
 
 export async function exists(path: string): Promise<boolean> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     fs.exists(path, (yes: boolean) => {
-      if (yes) {
-        resolve(true);
-      } else {
-        resolve(false);
-      }
+      resolve(yes);
+      // if (yes) {
+      //   resolve(true);
+      // } else {
+      //   resolve(false);
+      // }
     });
   });
 }
 
 export async function createDir(path: string) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     if (!(await exists(path))) {
       fs.mkdir(path, (err: any) => {
         if (err) {
@@ -96,7 +97,7 @@ export async function createDir(path: string) {
 }
 
 export async function deleteDir(path: string) {
-  return new Promise(async (resolve, reject) => {
+  return new Promise(async (resolve) => {
     if (await exists(path)) {
       rimraf(path, (err: any) => {
         if (err) {
@@ -110,20 +111,38 @@ export async function deleteDir(path: string) {
   });
 }
 
-export function clearDir(path) {
+export function clearDir(path: string) {
   let files = [];
   if (fs.existsSync(path)) {
     files = fs.readdirSync(path);
-    files.forEach((file, index) => {
+    files.forEach((file, _) => {
       let curPath = path + "/" + file;
       //判断是否是文件夹
       if (fs.statSync(curPath).isDirectory()) {
-        // clearDir(curPath); //递归删除文件夹
+        clearDir(curPath); //递归删除文件夹
       } else {
         //是文件的话说明是最后一层不需要递归
         fs.unlinkSync(curPath); //删除文件
       }
     });
     fs.rmdirSync(path);
+  }
+}
+
+export function clearFiles(path: string, fileName: string) {
+  let files: string[] = [];
+  if (fs.existsSync(path)) {
+    files = fs.readdirSync(path);
+
+    files.forEach((file: string) => {
+      let curPath = path + "/" + file;
+      //判断是否是文件夹
+      if (fs.statSync(curPath).isDirectory()) {
+        clearFiles(curPath, fileName); //递归删除文件夹
+      } else if (file.includes(fileName)) {
+        //是文件的话说明是最后一层不需要递归
+        fs.unlinkSync(curPath); //删除文件
+      }
+    });
   }
 }

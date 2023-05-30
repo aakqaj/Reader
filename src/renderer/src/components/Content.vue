@@ -1,14 +1,10 @@
 <template>
-  <div @keyup="changeShowTools" id="content-box">
+  <div id="content-box">
     <div class="title">
       <h4>{{ chapterName() }}</h4>
     </div>
     <div class="show">
-      <div
-        class="book-content"
-        @click.left="turnRight"
-        @contextmenu.prevent="turnLeft"
-      >
+      <div class="book-content">
         <div class="reading"></div>
       </div>
     </div>
@@ -32,29 +28,95 @@
 
 <script setup lang="ts">
 import anime from "animejs";
-import { computed, onMounted, ref, defineProps, watch, toRaw } from "vue";
+import {
+  computed,
+  onMounted,
+  onBeforeUnmount,
+  ref,
+  defineProps,
+  watch,
+  toRaw,
+} from "vue";
+import { useStore } from "vuex";
 import { getCursor } from "../assets/utils/requestBookCursor";
 import { replceContentByRegSource } from "../assets/utils/readReplaceReg";
-import { useStore } from "vuex";
 
-import { keyListener } from "../assets/utils/utils";
+import { debounce } from "../assets/utils/utils";
+import { mittBus } from "../assets/lib/mittBus";
+import {
+  getFontFamily,
+  getFontSize,
+  getThem,
+  setStyle,
+} from "../assets/utils/api/readStyle";
+import { BookStyle } from "../assets/interface/Style";
 
+// 书籍信息载入
 const store = useStore();
 const props = defineProps(["content"]);
 const bookDetail = toRaw(
   computed(() => store.state.BookDetails.bookDetail).value
 );
+
+//工具栏状态开关
 const showTools = computed(() => store.state.BookState.showTools);
+
+// 阅读进度计数
 const readingPageCount = ref(0);
 const readingPage = ref(0);
 
+// 动画时长 毫秒
 const animeDuration = 500;
 
+const titleFontFamily = ref("Hongyun");
+const contentFontFamily = ref("Xingkai");
+const titleFontsize = ref("32px");
+const contentFontsize = ref("28px");
+const bgcolor = ref("hsl(0, 0%, 21%)");
+const fontColor = ref("#ffffff");
+
+const scroll = debounce(function (e: any) {
+  e.preventDefault();
+  if (e.wheelDelta < 0) {
+    turnRight();
+  } else if (e.wheelDelta > 0) {
+    turnLeft();
+  }
+}, 250);
 onMounted(async () => {
+  const contentEl = document.querySelector("#content-box");
+  if (contentEl) {
+    contentEl.addEventListener("wheel", scroll);
+  }
   // 快捷键呼出工具栏
-  keyListener("Escape", () => {
+  keyListener("Escape", function () {
     changeShowTools();
   });
+
+  keyListener("Space", function () {
+    turnRight();
+  });
+
+  keyListener("ArrowRight", function () {
+    turnRight();
+  });
+
+  keyListener("ArrowLeft", function () {
+    turnLeft();
+  });
+
+  keyListener("alt+ArrowLeft", function () {
+    store.dispatch("setCursor", getCursor(bookDetail.BookName) - 1);
+  });
+
+  keyListener("alt+ArrowRight", function () {
+    store.dispatch("setCursor", getCursor(bookDetail.BookName) + 1);
+  });
+
+  // keyListener('Enter', function () {
+  //   const ipcRenderer = require('electron').ipcRenderer
+  //   ipcRenderer.send('window-close')
+  // })
 
   setTimeout(() => {
     const readingEle: any = document.querySelector(".reading");
@@ -74,6 +136,8 @@ onMounted(async () => {
           if (readingPage.value > readingPageCount.value) {
             readingPage.value = 0;
           }
+
+          // turnLeft()
           resizeTag = true;
         }, 100);
       }
@@ -83,23 +147,54 @@ onMounted(async () => {
 
 watch(
   () => toRaw(props.content),
-  (old) => {
+  async (old) => {
     let readingEl = document.querySelector(".reading");
     if (readingEl) {
-      readingEl.innerHTML = replceContentByRegSource(
+      readingEl.innerHTML = await replceContentByRegSource(
         bookDetail.BookName,
         old[1]
       );
-      const readingEle: any = document.querySelector(".reading");
+      const readingEle = document.querySelector(".reading") as HTMLDivElement;
       const scrollWidth = readingEle.scrollWidth;
       const pageWidth = readingEle.offsetWidth + 20;
       readingPageCount.value = Math.floor(scrollWidth / pageWidth);
-      if (readingPage.value > readingPageCount.value) {
-        readingPage.value = 0;
-      }
+      readingPage.value = 0;
     }
   }
 );
+
+// 防止mittBus多次触发
+onBeforeUnmount(() => {
+  console.log("注销");
+
+  mittBus.all.delete("reloadStyle");
+  const contentEl = document.querySelector("#content-box") as HTMLDivElement;
+  contentEl.removeEventListener("wheel", scroll);
+  document.onkeyup = null;
+});
+
+initSyle();
+
+mittBus.on("reloadStyle", (style: any) => {
+  titleFontFamily.value = (style as BookStyle).Font.TitleFontFamily || "Roboto";
+  contentFontFamily.value =
+    (style as BookStyle).Font.ContentFontFamily || "Roboto";
+  titleFontsize.value = (style as BookStyle).Font.TitleSize + "px";
+  contentFontsize.value = (style as BookStyle).Font.ContentSize + "px";
+  bgcolor.value = (style as BookStyle).Them.BackgroundColor;
+  fontColor.value = (style as BookStyle).Them.FontColor;
+
+  setStyle(style);
+});
+
+async function initSyle() {
+  titleFontFamily.value = (await getFontFamily()).titleFamily || "Roboto";
+  contentFontFamily.value = (await getFontFamily()).contentFamily || "Roboto";
+  titleFontsize.value = (await getFontSize()).titleSize + "px";
+  contentFontsize.value = (await getFontSize()).contentSize + "px";
+  bgcolor.value = (await getThem()).BackgroundColor;
+  fontColor.value = (await getThem()).FontColor;
+}
 
 function chapterName() {
   return bookDetail.ChapterList[getCursor(bookDetail.BookName)].ChapterName;
@@ -116,7 +211,7 @@ function turnRight() {
 
   if (readingPage.value >= 0 && readingPage.value <= readingPageCount.value) {
     if (readingPage.value == 0) {
-      pageWidth = pageWidth - 10;
+      // pageWidth = pageWidth - 10;
     }
 
     if (readingPage.value === readingPageCount.value) {
@@ -167,8 +262,8 @@ function turnLeft() {
       return;
     }
     store.dispatch("setCursor", getCursor(bookDetail.BookName) - 1);
-    const r: any = document.querySelector(".reading");
-    let p = r.offsetWidth + 20;
+    // const r: any = document.querySelector(".reading");
+    // let p = r.offsetWidth + 20;
 
     const readingEle: any = document.querySelector(".reading");
     let pageWidth = readingEle.offsetWidth + 20;
@@ -191,6 +286,69 @@ function turnLeft() {
     }, 10);
   }
 }
+
+interface KeyFun {
+  keyName: string;
+  fun: Function;
+}
+const keyFun: KeyFun[] = [];
+
+function keyListener(key: string, callback: Function) {
+  if (!keyFun.some((item) => item.keyName === key)) {
+    keyFun.push({
+      keyName: key,
+      fun: callback,
+    });
+  }
+
+  document.onkeyup = (e) => {
+    e.preventDefault();
+
+    if (e.ctrlKey) {
+      keyFun.map((item) => {
+        if (
+          item.keyName.indexOf(e.code) !== -1 &&
+          item.keyName.indexOf("ctrl") !== -1
+        ) {
+          item.fun();
+        }
+      });
+      return;
+    }
+
+    if (e.metaKey) {
+      console.log("run");
+
+      keyFun.map((item) => {
+        if (
+          item.keyName.indexOf(e.code) !== -1 &&
+          item.keyName.indexOf("meta") !== -1
+        ) {
+          item.fun();
+        }
+      });
+      return;
+    }
+
+    if (e.altKey) {
+      keyFun.map((item) => {
+        if (
+          item.keyName.indexOf(e.code) !== -1 &&
+          item.keyName.indexOf("alt") !== -1
+        ) {
+          item.fun();
+        }
+      });
+      return;
+    }
+
+    keyFun.filter((item) => {
+      if (e.code === item.keyName) {
+        item.fun();
+      }
+    });
+  };
+}
 </script>
 
 <style lang="scss">
@@ -198,16 +356,21 @@ function turnLeft() {
   width: 100%;
   height: 100%;
   position: relative;
-  // background: #e0ce9e
-  //   url("https://qdfepccdn.qidian.com/www.qidian.com/images/read/theme/body_theme1_bg_2x.acde8.png")
-  //   repeat fixed;
+
+  background-color: v-bind(bgcolor);
+  color: v-bind(fontColor);
 }
 
 .show {
-  font-family: Xingkai;
-  font-size: 28px;
+  font-family: v-bind(contentFontFamily);
+  font-size: v-bind(contentFontsize);
 
   overflow: scroll;
+  overflow-x: hidden;
+
+  transform: translateZ(0);
+
+  // cursor: none;
 }
 
 .book-content {
@@ -224,14 +387,15 @@ function turnLeft() {
   margin: 0 auto;
 
   text-align: center;
-  font-size: 24px;
+  font-size: v-bind(titleFontsize);
   z-index: 20;
 
   h4 {
     margin: 0;
     padding: 0;
+    color: v-bind(fontColor);
 
-    font-family: Hongyun;
+    font-family: v-bind(titleFontFamily);
   }
 }
 
@@ -279,6 +443,28 @@ function turnLeft() {
   .reading {
     margin: 0px 20px;
     columns: calc(100vw - 980px);
+  }
+}
+
+@media only screen and (min-width: 1836px) {
+  .show {
+    margin-left: 280px;
+    margin-right: 280px;
+  }
+  .reading {
+    margin: 0px 20px;
+    columns: calc(100vw - 1350px);
+  }
+}
+
+@media only screen and (min-width: 2000px) {
+  .show {
+    margin-left: 280px;
+    margin-right: 280px;
+  }
+  .reading {
+    margin: 0px 20px;
+    columns: calc(100vw - 1590px);
   }
 }
 </style>

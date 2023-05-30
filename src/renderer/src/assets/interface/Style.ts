@@ -1,9 +1,4 @@
-interface FontFamily {
-  name: string;
-  url: string;
-}
-
-interface Them {
+export interface Them {
   name: string;
   BackgroundColor: string;
   FontColor: string;
@@ -11,9 +6,10 @@ interface Them {
 
 export interface BookStyle {
   Font: {
-    FontFamily?: FontFamily[];
+    TitleFontFamily?: string;
+    ContentFontFamily?: string;
     TitleSize: number;
     ContentSize: number;
   };
-  Thems: Them[];
+  Them: Them;
 }

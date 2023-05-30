@@ -1,4 +1,9 @@
-import { readJsonFileSync, writeJsonFile, existsSync } from "./operationFile";
+import {
+  readJsonFileSync,
+  writeJsonFile,
+  existsSync,
+  readJsonFile,
+} from "./operationFile";
 
 export async function pushReplaceRule(
   bookname: string,
@@ -10,24 +15,29 @@ export async function pushReplaceRule(
     await writeJsonFile(path, []);
   }
 
-  const replaceRegList = readJsonFileSync(path);
+  let replaceRegList = await readReplaceRule(bookname);
 
   if (!replaceRegList.some((val: any) => val.source === source)) {
+    console.log("push", source, replace);
+
     replaceRegList.push({ source, replace });
   } else {
     console.log("有此元素");
   }
 
-  writeJsonFile(path, replaceRegList);
+  console.log(replaceRegList);
+
+  await writeJsonFile(path, replaceRegList);
 }
 
-export function readReplaceRule(bookname: string) {
+export async function readReplaceRule(bookname: string) {
   const path = `./static/bookshelf/${bookname}/replaceReg.json`;
   if (!existsSync(path)) {
+    await writeJsonFile(path, []);
     return [{ source: "无替换净化规则", replace: "" }];
   }
 
-  return readJsonFileSync(path);
+  return await readJsonFile(path);
 }
 
 export function removeReg(bookname: string, source: string) {
@@ -41,10 +51,13 @@ export function removeReg(bookname: string, source: string) {
   }
 }
 
-export function replceContentByRegSource(bookname: string, content: string) {
+export async function replceContentByRegSource(
+  bookname: string,
+  content: string
+) {
   const path = `./static/bookshelf/${bookname}/replaceReg.json`;
   if (existsSync(path)) {
-    const replaceRegList: [] = readReplaceRule(bookname);
+    const replaceRegList: [] = await readReplaceRule(bookname);
     let result = content;
 
     replaceRegList.map((item: any) => {
@@ -56,3 +69,27 @@ export function replceContentByRegSource(bookname: string, content: string) {
 
   return content;
 }
+
+// export async function _pushReplaceRule(
+//   bookname: string,
+//   source: string,
+//   replace: string = "",
+//   index: number
+// ) {
+//   const path = `./static/bookshelf/${bookname}/replaceReg.json`;
+//   if (!existsSync(path)) {
+//     await writeJsonFile(path, []);
+//   }
+
+//   let replaceRegList = await readReplaceRule(bookname);
+//   console.log(replaceRegList, index);
+//   console.log("push", source, replace);
+
+//   if (!replaceRegList.some((val: any) => val.source === source)) {
+//     replaceRegList.push({ source, replace });
+
+//     await writeJsonFile(path, replaceRegList);
+//   } else {
+//     console.log("有此元素");
+//   }
+// }

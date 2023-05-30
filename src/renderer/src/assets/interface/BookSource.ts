@@ -1,4 +1,4 @@
-export interface SearchSource extends BookSource {
+export interface SearchSource {
   SearchUrl: string;
   Method: "POST" | "GET";
   Payload: {} | string[];
@@ -15,7 +15,7 @@ export interface SearchSource extends BookSource {
   ImgURLRule: string;
 }
 
-export interface BookDetailSource extends BookSource {
+export interface BookDetailSource {
   BookNameRule: string;
   AuthorRule: string;
   TypeRule: string;

@@ -58,7 +58,7 @@ export class ContentRequest {
           )
         )
       );
-    }, 10);
+    }, 0);
 
     if (cursor < 0 || cursor >= this.bookChapter.length) {
       return null;
@@ -124,48 +124,4 @@ export class ContentRequest {
     }
     return content;
   }
-
-  async cacheData(cursor: number) {
-    Promise.all([
-      this.requestContent(
-        this.bookChapter[cursor - 5]?.ChapterUrl || "",
-        cursor - 5
-      ),
-      this.requestContent(
-        this.bookChapter[cursor - 4]?.ChapterUrl || "",
-        cursor - 4
-      ),
-      this.requestContent(
-        this.bookChapter[cursor - 3]?.ChapterUrl || "",
-        cursor - 3
-      ),
-      this.requestContent(
-        this.bookChapter[cursor - 2]?.ChapterUrl || "",
-        cursor - 2
-      ),
-      this.requestContent(
-        this.bookChapter[cursor - 1]?.ChapterUrl || "",
-        cursor - 1
-      ),
-      this.requestContent(this.bookChapter[cursor]?.ChapterUrl || "", cursor),
-      this.requestContent(
-        this.bookChapter[cursor + 1]?.ChapterUrl || "",
-        cursor + 1
-      ),
-      this.requestContent(
-        this.bookChapter[cursor + 2]?.ChapterUrl || "",
-        cursor + 2
-      ),
-      this.requestContent(
-        this.bookChapter[cursor + 3]?.ChapterUrl || "",
-        cursor + 3
-      ),
-      this.requestContent(
-        this.bookChapter[cursor + 4]?.ChapterUrl || "",
-        cursor + 4
-      ),
-    ]);
-  }
 }
-
-export class ContentRead {}

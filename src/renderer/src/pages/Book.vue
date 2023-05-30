@@ -1,5 +1,5 @@
 <template>
-  <Teleport to="body">
+  <Teleport to="#book-body">
     <div id="my-book">
       <chapter-list></chapter-list>
       <Content :content="content"></Content>
@@ -13,7 +13,7 @@ import ChapterList from "../components/BookControl/ChapterList.vue";
 import Tools from "../components/BookControl/Tools.vue";
 import Content from "../components/Content.vue";
 
-import { useRouter } from "vue-router";
+// import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
 import { getCursor } from "../assets/utils/requestBookCursor";
@@ -23,7 +23,7 @@ import { ChapterQueue } from "../assets/utils/ChapterQueue";
 import { computed, onBeforeMount, Teleport, toRaw, watch, ref } from "vue";
 
 const store = useStore();
-const router = useRouter();
+// const router = useRouter();
 
 const bookDetail = computed(() => store.state.BookDetails.bookDetail);
 const chapterQueue = new ChapterQueue();
@@ -76,8 +76,10 @@ body {
 }
 
 #my-book {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
+
+  border-radius: 8px;
 
   min-width: 520px;
   position: absolute;
@@ -90,6 +92,6 @@ body {
   //   url("https://qdfepccdn.qidian.com/www.qidian.com/images/read/theme/body_theme1_bg_2x.acde8.png")
   //   repeat fixed;
 
-  overflow: scroll;
+  overflow: hidden;
 }
 </style>

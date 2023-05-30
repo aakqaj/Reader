@@ -2,12 +2,15 @@
 // import Versions from '@renderer/components/Versions.vue'
 import ToolsBar from "./components/ToolsBar.vue";
 import SearchBox from "./components/SearchBox.vue";
-import { computed, onMounted } from "vue";
+import WindowBtn from "./components/WindowBtn.vue";
+
+import "ant-design-vue/dist/antd.css";
+import "./assets/css/styles.less";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 import { BookSource } from "./assets/interface/BookSource";
 import { readJsonFile } from "./assets/utils/operationFile";
-// import axios from 'axios'
 
 const router = useRouter();
 const stroe = useStore();
@@ -19,15 +22,25 @@ onMounted(async () => {
     "./static/configs/BookSource.json"
   );
   await stroe.dispatch("setBookSourceList", bookSourceAllData);
-  await stroe.dispatch("setBookSource", "88读书网");
+  await stroe.dispatch("setBookSource", "平凡文学");
+
+  if (navigator.userAgent.indexOf("Mac OS X") !== -1) {
+    const app = document.querySelector("#app") as HTMLDivElement;
+    app.style.borderRadius = "0";
+  }
 });
 </script>
 
 <template>
-  <div>
-    <search-box></search-box>
-    <router-view></router-view>
-    <tools-bar></tools-bar>
+  <div class="container">
+    <window-btn />
+    <div class="reader">
+      <search-box></search-box>
+      <router-view></router-view>
+      <tools-bar></tools-bar>
+
+      <div id="book-body"></div>
+    </div>
   </div>
 </template>
 
@@ -42,7 +55,21 @@ body {
 
   min-width: 460px;
 
+  background-color: rgba(255, 255, 255, 0);
+  position: relative;
+}
+#app {
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
   color: var(--text-color);
   background-color: var(--bg);
+
+  overflow: scroll;
+}
+
+.reader {
+  height: calc(100vh - 30px);
+  z-index: 1;
 }
 </style>

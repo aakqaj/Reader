@@ -1,11 +1,13 @@
 import BookSourceAnalysis from "./BookSourceAnalysis";
 import { BookSource, ContentSource } from "../interface/BookSource";
 import { BookDetail, Chapter } from "../interface/BookDeatils";
-import { readFile, readJsonFile, exists, writeFile } from "./operationFile";
+import { readFile, exists, writeFile } from "./operationFile";
 import { request } from "./request";
 import { joinUrl } from "./utils";
 import { getCursor } from "./requestBookCursor";
 import { isSave } from "../utils/DetailsRequest";
+import { store } from "../../store";
+import { toRaw } from "vue";
 
 export class ContentRequest {
   bookDetail!: BookDetail;
@@ -22,7 +24,7 @@ export class ContentRequest {
     this.bookChapter = this.bookDetail.ChapterList as Chapter[]; // 断言存在
 
     if (!isSave(this.bookname)) {
-      this.bookname = "cache";
+      this.bookname = "test";
       localStorage.setItem(this.bookname, "0");
       // clearDir("./static/bookshelf/cache/");
     }
@@ -30,12 +32,13 @@ export class ContentRequest {
     this.cursor = getCursor(this.bookname || "");
   }
   async init() {
-    const sourceList: BookSource[] = await readJsonFile(
-      "./static/configs/BookSource.json"
-    );
+    const state: any = toRaw(store.state);
+    const sourceList: BookSource[] = state.BookSource.bookSourceList;
     const source = sourceList.filter(
       (item) => item.SourceName == this.bookDetail.SourceName
     )[0];
+
+    console.log(source);
 
     this.contentSource = source.BookDetail.Content;
   }
@@ -124,48 +127,4 @@ export class ContentRequest {
     }
     return content;
   }
-
-  async cacheData(cursor: number) {
-    Promise.all([
-      this.requestContent(
-        this.bookChapter[cursor - 5]?.ChapterUrl || "",
-        cursor - 5
-      ),
-      this.requestContent(
-        this.bookChapter[cursor - 4]?.ChapterUrl || "",
-        cursor - 4
-      ),
-      this.requestContent(
-        this.bookChapter[cursor - 3]?.ChapterUrl || "",
-        cursor - 3
-      ),
-      this.requestContent(
-        this.bookChapter[cursor - 2]?.ChapterUrl || "",
-        cursor - 2
-      ),
-      this.requestContent(
-        this.bookChapter[cursor - 1]?.ChapterUrl || "",
-        cursor - 1
-      ),
-      this.requestContent(this.bookChapter[cursor]?.ChapterUrl || "", cursor),
-      this.requestContent(
-        this.bookChapter[cursor + 1]?.ChapterUrl || "",
-        cursor + 1
-      ),
-      this.requestContent(
-        this.bookChapter[cursor + 2]?.ChapterUrl || "",
-        cursor + 2
-      ),
-      this.requestContent(
-        this.bookChapter[cursor + 3]?.ChapterUrl || "",
-        cursor + 3
-      ),
-      this.requestContent(
-        this.bookChapter[cursor + 4]?.ChapterUrl || "",
-        cursor + 4
-      ),
-    ]);
-  }
 }
-
-export class ContentRead {}

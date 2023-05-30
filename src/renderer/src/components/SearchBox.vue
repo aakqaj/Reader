@@ -11,18 +11,18 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useStore } from 'vuex'
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
-const bookname = ref('')
-const router = useRouter()
-const store = useStore()
+const bookname = ref("");
+const router = useRouter();
+const store = useStore();
 // const bookList = computed(() => store.state.bookList);
 
 async function search() {
-  await store.dispatch('setBookList', bookname.value)
-  router.replace('/search')
+  await store.dispatch("searchBook", bookname.value);
+  router.replace("/search");
 }
 </script>
 
@@ -30,8 +30,7 @@ async function search() {
 .search {
   &__container {
     margin: 0 auto;
-
-    padding-top: 12px;
+    padding-top: 28px;
     width: 420px;
   }
 

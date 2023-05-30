@@ -4,14 +4,14 @@
       <template #dropDownTitle>皮肤样式</template>
       <template #dropDownContent>
         <div class="item">
-          <div class="them-test black-white" @click="demo"></div>
-          <span>淡雅白</span>
-          <div class="them black-yellow"></div>
-          <span>牛皮黄</span>
-          <div class="them black-green"></div>
-          <span>自然绿</span>
-          <div class="them white-black"></div>
-          <span>石墨黑</span>
+          <template v-for="them in thems" :key="them.name">
+            <div
+              class="them"
+              :class="them.className"
+              @click="chooseThem(them)"
+            ></div>
+            <span>{{ them.name }}</span>
+          </template>
         </div>
       </template>
     </the-drop-down>
@@ -19,12 +19,49 @@
 </template>
 
 <script setup lang="ts">
-import { getThems } from "../../assets/utils/LocationlApi/readStyle";
-import { defineProps, computed, ref } from "vue";
+import { getStyle } from "../../assets/utils/api/readStyle";
+import { defineProps } from "vue";
 import TheDropDown from "../TheDropDown.vue";
+import { mittBus } from "../../assets/lib/mittBus";
+import { BookStyle } from "../../assets/interface/Style";
 
-function demo() {
-  getThems();
+const thems = [
+  {
+    className: "black-white",
+    name: "淡雅白",
+    BackgroundColor: "#FFFFFF",
+    FontColor: "#000003",
+  },
+  {
+    className: "black-yellow",
+    name: "牛皮黄",
+    BackgroundColor: "#e0ce9e",
+    FontColor: "#000003",
+  },
+  {
+    className: "black-green",
+    name: "青草绿",
+    BackgroundColor: "rgb(227, 237, 205)",
+    FontColor: "#000003",
+  },
+  {
+    className: "white-black",
+    name: "石墨黑",
+    BackgroundColor: "hsl(0, 0%, 21%)",
+    FontColor: "#fff",
+  },
+];
+
+async function chooseThem(them: any) {
+  let style: BookStyle = await getStyle();
+
+  style.Them = {
+    name: them.name,
+    BackgroundColor: them.BackgroundColor,
+    FontColor: them.FontColor,
+  };
+
+  mittBus.emit("reloadStyle", style);
 }
 
 defineProps(["id"]);
@@ -77,14 +114,13 @@ defineProps(["id"]);
     position: relative;
     width: 48px;
     height: 48px;
-    background-image: linear-gradient(to bottom right, #000003, #fff);
-    // &::before {
-    //   border-color: #000003 transparent transparent #000003;
-    // }
+    &::before {
+      border-color: #000003 transparent transparent #000003;
+    }
 
-    // &::after {
-    //   border-color: transparent white white transparent;
-    // }
+    &::after {
+      border-color: transparent #ffffff #ffffff transparent;
+    }
   }
 
   .black-yellow {

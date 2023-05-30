@@ -49,10 +49,60 @@ export function joinUrl(leftUrl: string | undefined, rightUrl: string): string {
   return leftUrl + rightUrl;
 }
 
+interface KeyFun {
+  keyName: string;
+  fun: Function;
+}
+const keyFun: KeyFun[] = [];
+
 export function keyListener(key: string, callback: Function) {
+  if (!keyFun.some((item) => item.keyName === key)) {
+    keyFun.push({
+      keyName: key,
+      fun: callback,
+    });
+  }
+
   document.onkeyup = (e) => {
-    if (e.key === key) {
-      callback();
+    e.preventDefault();
+    keyFun.filter((item) => {
+      if (e.key === item.keyName) {
+        item.fun();
+      }
+    });
+  };
+}
+
+export function debounce(func: Function, delay: number) {
+  let timeout: any = null;
+  return function (...args: any) {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
     }
+
+    timeout = setTimeout(() => {
+      // @ts-ignore
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
+export function getInputElementMapping(rule: string) {
+  let ele: HTMLInputElement | NodeListOf<HTMLInputElement> =
+    document.querySelector(rule) as HTMLInputElement;
+  if (rule.includes("action")) {
+    ele = document.querySelectorAll<HTMLInputElement>(rule);
+    ele.forEach((item) => {
+      if (item.checked) {
+        ele = item;
+      }
+    });
+  }
+
+  ele = ele as HTMLInputElement;
+  return {
+    ele,
+    value: ele.value,
   };
 }
